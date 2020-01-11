@@ -1,0 +1,29 @@
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
+var cors = require('cors');
+var mysql = require('mysql');
+app.use(bodyParser.json());
+app.use(cors());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+ 
+// connection configurations
+var dbConn = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'test'
+});
+
+app.get('/getdata', function (req, res) {
+    dbConn.query('SELECT * FROM get', function (error, results, fields) {
+        if (error) throw error;
+        return res.send({ error: false, data: results, message: 'Complete Data.' });
+    });
+});
+ 
+app.listen(3000, function () {
+    console.log('Node app is running on port 2000');
+  });
